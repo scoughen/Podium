@@ -23,22 +23,22 @@ int  pin5 = digitalRead(5);
 int  pin6 = digitalRead(6);
   if (pin2 == 1 && pin3 == 0 && pin4 == 0 && pin5 == 0 && pin6 == 0)
   {
-    myservo.write(0*255/5);              // tell servo to go to position 0
+    myservo.write(0*180/5);              // tell servo to go to position 0
   }
   else if (pin2 == 0 && pin3 == 1 && pin4 == 0 && pin5 == 0 && pin6 == 0)
   {
-    myservo.write(1*255/5);              // tell servo to go to position 1
+    myservo.write(1*180/5);              // tell servo to go to position 1
   }
   else if (pin2 == 0 && pin3 == 0 && pin4 == 1 && pin5 == 0 && pin6 == 0)
   {
-    myservo.write(2*255/5);              // tell servo to go to position 2
+    myservo.write(2*180/5);              // tell servo to go to position 2
   }
   else if (pin2 == 0 && pin3 == 0 && pin4 == 0 && pin5 == 1 && pin6 == 0)
   {
-    myservo.write(3*255/5);              // tell servo to go to position 3
+    myservo.write(3*180/5);              // tell servo to go to position 3
   }
   else if (pin2 == 0 && pin3 == 0 && pin4 == 0 && pin5 == 0 && pin6 == 1)
   {
-    myservo.write(5*255/5);              // tell servo to go to position 4
+    myservo.write(4*180/5);              // tell servo to go to position 4
   }
 }
