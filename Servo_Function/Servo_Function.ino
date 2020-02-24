@@ -54,7 +54,6 @@ void loop() {
   servo_control_10();
 }
 
-
 //Servo 1 Function
 float servo_control_1(){
   int val = analogRead(potpin1);  //Reads value of potentiometer (value between 0 and 1023)
@@ -78,18 +77,11 @@ float servo_control_1(){
   if ((val >=144) && (val <=180)){
     servo_1.write(162);
   }
-<<<<<<< HEAD
 return val;  
-=======
->>>>>>> f4aa762590d1cce244145a50c90760f1e2565cba
 
 }
 //Servo 2 Function
-<<<<<<< HEAD
 float servo_control_2(){
-=======
-  float servo_control_2(){
->>>>>>> f4aa762590d1cce244145a50c90760f1e2565cba
   int val = analogRead(potpin2);  //Reads value of potentiometer (value between 0 and 1023)
   val = map(val,0,1023,0,180);  //Converts 0-1023 range to 0-180
   if ((val >=0) && (val <36)){  
@@ -111,11 +103,8 @@ float servo_control_2(){
   if ((val >=144) && (val <=180)){
     servo_2.write(162);
   }
-<<<<<<< HEAD
 return val;
 }
-=======
->>>>>>> f4aa762590d1cce244145a50c90760f1e2565cba
 
 //Servo 3 Function
 float servo_control_3(){
@@ -140,11 +129,8 @@ float servo_control_3(){
   if ((val >=144) && (val <=180)){
     servo_3.write(162);
   }
-<<<<<<< HEAD
 return val;
 }
-=======
->>>>>>> f4aa762590d1cce244145a50c90760f1e2565cba
 
 //servo 4 Function
 float servo_control_3(){
@@ -169,13 +155,9 @@ float servo_control_3(){
   if ((val >=144) && (val <=180)){
     servo_3.write(162);
   }
-<<<<<<< HEAD
 return val;
 }
-
-=======
   
->>>>>>> f4aa762590d1cce244145a50c90760f1e2565cba
 //Servo 5 Function
 float servo_control_5(){
   int val = analogRead(potpin5);  //Reads value of potentiometer (value between 0 and 1023)
@@ -199,11 +181,8 @@ float servo_control_5(){
   if ((val >=144) && (val <=180)){
     servo_5.write(162);
   }
-<<<<<<< HEAD
 return val;
 }
-=======
->>>>>>> f4aa762590d1cce244145a50c90760f1e2565cba
 
 //Servo 6 function
 float servo_control_6(){
@@ -228,7 +207,6 @@ float servo_control_6(){
   if ((val >=144) && (val <=180)){
     servo_6.write(162);
   }
-<<<<<<< HEAD
 return val;
 }
 
@@ -257,7 +235,6 @@ float servo_control_7(){
     }
 return val;
 }
-=======
 
 //Servo 7 Function
 float servo_control_7(){
@@ -282,7 +259,6 @@ float servo_control_7(){
   if ((val >=144) && (val <=180)){
     servo_7.write(162);
   }
->>>>>>> f4aa762590d1cce244145a50c90760f1e2565cba
 
 //Servo 8 Function
 float servo_control_8(){
@@ -307,11 +283,8 @@ float servo_control_8(){
   if ((val >=144) && (val <=180)){
     servo_8.write(162);
   }
-<<<<<<< HEAD
 return val;
 }
-=======
->>>>>>> f4aa762590d1cce244145a50c90760f1e2565cba
 
 //Servo 9 Function
 float servo_control_9(){
@@ -336,11 +309,8 @@ float servo_control_9(){
   if ((val >=144) && (val <=180)){
     servo_9.write(162);
   }
-<<<<<<< HEAD
 return val;
 }
-=======
->>>>>>> f4aa762590d1cce244145a50c90760f1e2565cba
 
 //Servo 10 Function
 float servo_control_10(){
@@ -364,12 +334,8 @@ float servo_control_10(){
   }
   if ((val >=144) && (val <=180)){
     servo_10.write(162);
-<<<<<<< HEAD
 }
 retun val;
-=======
   }
 
-
->>>>>>> f4aa762590d1cce244145a50c90760f1e2565cba
 }
