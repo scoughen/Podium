@@ -16,7 +16,7 @@ void loop() {
   step0[0] = digitalRead(inlet0);
   read0 = analogRead(scale0);
   
-  for (int i = 0, i<= 9, i++)
+  for (int i = 0; i<= 9; i++) //transfer pellet presence data down the line
   {
     step4[i] = step3[i];
     step3[i] = step2[i];
@@ -30,6 +30,6 @@ void loop() {
   }
   else
   {
-    //PROBLEM!!!!!!!
+    //Issue between system inlet and scale!!!!
   }
 }
