@@ -80,8 +80,10 @@ if ((val >=108) && (val <144)){
 }
 if ((val >=144) && (val <=180)){
   servo_1.write(162);
+return val;  
 }
 
+}
 //Servo 2 Function
 float servo_control_2(){
 int val = analogRead(potpin2);  //Reads value of potentiometer (value between 0 and 1023)
@@ -104,6 +106,8 @@ if ((val >=108) && (val <144)){
 }
 if ((val >=144) && (val <=180)){
   servo_2.write(162);
+return val;
+}
 }
 
 //Servo 3 Function
@@ -128,6 +132,8 @@ if ((val >=108) && (val <144)){
 }
 if ((val >=144) && (val <=180)){
   servo_3.write(162);
+return val;
+}
 }
 
 //servo 4 Function
@@ -152,7 +158,10 @@ if ((val >=108) && (val <144)){
 }
 if ((val >=144) && (val <=180)){
   servo_3.write(162);
+return val;
 }
+}
+
 //Servo 5 Function
 float servo_control_5(){
 int val = analogRead(potpin5);  //Reads value of potentiometer (value between 0 and 1023)
@@ -175,6 +184,8 @@ if ((val >=108) && (val <144)){
 }
 if ((val >=144) && (val <=180)){
   servo_5.write(162);
+return val;
+}
 }
 
 //Servo 6 function
@@ -199,6 +210,8 @@ if ((val >=108) && (val <144)){
 }
 if ((val >=144) && (val <=180)){
   servo_6.write(162);
+return val;
+}
 }
 
 //Servo 7 Function
@@ -223,6 +236,8 @@ if ((val >=108) && (val <144)){
 }
 if ((val >=144) && (val <=180)){
   servo_7.write(162);
+return val;
+}
 }
 
 //Servo 8 Function
@@ -247,6 +262,8 @@ if ((val >=108) && (val <144)){
 }
 if ((val >=144) && (val <=180)){
   servo_8.write(162);
+return val;
+}
 }
 
 //Servo 9 Function
@@ -271,6 +288,8 @@ if ((val >=108) && (val <144)){
 }
 if ((val >=144) && (val <=180)){
   servo_9.write(162);
+return val;
+}
 }
 
 //Servo 10 Function
