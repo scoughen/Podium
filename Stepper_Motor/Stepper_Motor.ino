@@ -12,6 +12,6 @@ void setup() {
 
 void loop() {
   myStepper.step(10);  // steps taken 
-  delay(500);  // wait 500 ms before repeating motion
+  delay(1000);  // wait one second before repeating motion
 
 }
