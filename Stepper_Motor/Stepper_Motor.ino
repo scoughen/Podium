@@ -1,5 +1,5 @@
 #include <Stepper.h>
-#define stepsPerRev 200;  // Steps per revolution of the motor
+#define stepsPerRev 200  // Steps per revolution of the motor
 
 // initialize the stepper library on pins 8 through 11:
 Stepper myStepper(stepsPerRev, 8, 9, 10, 11);
