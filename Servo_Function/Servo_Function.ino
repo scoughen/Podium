@@ -11,6 +11,7 @@ Servo servo_8;  //Create servo object to control eighth servo
 Servo servo_9;  //Create servo object to control nineth servo
 Servo servo_10;  //Create servo object to control tenth servo
 
+float scale[9];  //values for current readings from all scales
 
 int pos = 0;  //Integer value for servo position
 
@@ -26,6 +27,24 @@ int potpin9 = 0;  //potentiometrer attached to analog pin zero
 int potpin10 = 0;  //potentiometrer attached to analog pin zero
 int val;  //variable to read value from the analogue pin
 
+//--------Selector Interrupt Var's
+const byte selectorInterruptPin = 2;
+int sel1flg = 0;
+
+//--------Funnel Interrupt Var's
+const byte FunnelInterruptPin = 3;
+int funnelState = 0;
+
+//--------Cogwheel Error Checking Var's
+const byte inlet0 = 15; //inlet sensor pin
+const byte scale0 = A0; //scale pin
+bool step0[9]; //1 element per line  -- value for pellet presence before cogwheel
+bool step1[9]; //1 element per line  -- value for pellet presence when reached cogwheel
+bool step2[9]; //1 element per line  -- value for pellet presence 1 cycle after reaching cogwheel
+bool step3[9]; //1 element per line  -- value for pellet presence 2 cycles after reaching cogwheel
+bool step4[9]; //1 element per line  -- value for pellet presence when reaches scale
+
+//--------
 
 void setup() {
   servo_1.attach(?);  //Servo 1 is attached to pin
@@ -38,20 +57,67 @@ void setup() {
   servo_8.attach(?);  //Servo 8 is attached to pin
   servo_9.attach(?);  //Servo 9 is attached to pin
   servo_10.attach(?);  //Servo 10 is attached to pin
+
+  //------Set up for Selector Interrupt
+  pinMode(ledPin, OUTPUT);
+  pinMode(statPin, OUTPUT);
+  pinMode(interruptPin, INPUT_PULLUP);
+  
+  attachInterrupt(digitalPinToInterrupt(SelectorInterruptPin), Selector, RISING);
+  //------Set up for Funnel Interrupt
+  pinMode(FunnelInterruptPin, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(FunnelInterruptPin), FunnelSensor, CHANGE);
+  
+  //------Set up for Cogwheel Error Checking
+  pinMode(inlet0, INPUT);
+  pinMode(scale0, INPUT);
+  
+  //------
 }
 
 
 void loop() {
-  servo_control_1();
-  servo_control_2();
-  servo_control_3();
-  servo_control_4();
-  servo_control_5();
-  servo_control_6();
-  servo_control_7();
-  servo_control_8();
-  servo_control_9();
-  servo_control_10();
+  scale[0] = servo_control_1();
+  scale[1] = servo_control_2();
+  scale[2] = servo_control_3();
+  scale[3] = servo_control_4();
+  scale[4] = servo_control_5();
+  scale[5] = servo_control_6();
+  scale[6] = servo_control_7();
+  scale[7] = servo_control_8();
+  scale[8] = servo_control_9();
+  scale[9] = servo_control_10();
+
+  //-------Logic for Selector Interrupt
+  if(sel1flg != 0) //if the beam was not tripped, the pellet did not exit the selector
+  {
+    //Problem between scale and selector exit!!!!
+  }
+  else //if the beam was tripped, the pellet exited the selector
+  {
+    sel1flg = 0; //reset selector flag
+  }
+  //------Logic for Funnel Interrupt
+  
+  if(funnelState == HIGH) //if the beam is still tripped, there is a jam in the funnel
+  {
+    //Clog at funnel!!!!
+  }
+  
+  //------Logic for Cogwheel Error Checking
+  step0[0] = digitalRead(inlet0);
+  
+  for (int i = 0; i<= 9; i++) //transfer pellet presence data down the line
+  {
+    step4[i] = step3[i];
+    step3[i] = step2[i];
+    step2[i] = step1[i];
+    step1[i] = step0[i];
+  }
+
+  CogError(scale,step4)
+
+  //------
 }
 
 //Servo 1 Function
@@ -338,4 +404,29 @@ float servo_control_10(){
 retun val;
   }
 
+}
+
+//------Cogwheel Error Check
+void CogError(float scale[9],bool stepLast[9]) {
+  for (int i = 1; i<=9; i++)
+  {
+      if(scale[i] != 0 && stepLast[i] == 1)
+    {
+      //no issues
+    }
+    else
+    {
+      //Issue between system inlet and scale!!!!
+    }
+  }
+}
+
+//------Selector ISR
+void Selector() {
+  sel1flg = 1; //set flag when pellet exits selector
+}
+
+//------Funnel ISR
+void FunnelSensor() {
+  funnelState = digitalRead(FunnelInterruptPin); //set or reset the flag
 }
