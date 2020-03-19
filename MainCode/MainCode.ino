@@ -1,5 +1,11 @@
 #include <Adafruit_PWMServoDriver.h>
 #include <Wire.h>
+#include <Stepper.h>
+
+
+// initialize the stepper library on pins 8 through 11:
+Stepper myStepper(stepsPerRev, 8, 9, 10, 11);
+#define stepsPerRev 200  // Steps per revolution of Cogwheel stepper motor
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
@@ -74,7 +80,9 @@ void setup() {
   pinMode(inlet0, INPUT);
   pinMode(scale0, INPUT);
   
-  //------
+  //------Set up for Cogwheel Stepper Motor
+  myStepper.setSpeed(60);  // sets the speed at 60 rpm
+  Serial.begin(9600);  // serial port
 }
 
 
@@ -83,6 +91,10 @@ void loop() {
   {
     scale[i] = servo_control(i);
   }
+
+  //-------Cogwheel Control
+  myStepper.step(10);  // steps taken
+//  delay(1000); <-----------------------DO WE NEED THIS? Settling time for load cells?
   
   //-------Logic for Selector Interrupt
   if(sel1flg != 0) //if the beam was not tripped, the pellet did not exit the selector
