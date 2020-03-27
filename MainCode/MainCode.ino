@@ -7,6 +7,8 @@
     #define Low 0.525 // (g)
     #define High 0.535 // (g)
     #define VeryHigh 0.550 // (g)
+  //Bin Contents Threshold
+    #define binMax 100000 // maximum number of pellets that can enter a bin before stoping the process
 //------END OF USER CONTROLLED VALUES
 
 #define scaleTime 1100  //time spent weighing each pellet in miliseconds
@@ -20,7 +22,7 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 float scale[10];  //values for current readings from all scales
 
 //--------Stepper Motor Var's
-#define StepsPerIncrement 24
+#define StepsPerIncrement 20
 int pulse = 7; //pulse pin
 int dir = 6; // direction pin
 int en = 5; // enable pin
@@ -31,13 +33,16 @@ float LoadA_Strain[10];
 float ReadingB_Strain[10];
 float LoadB_Strain[10];
 
+//--------Bin Contents Var's
+int VeryLowCount = 0;
+int LowCount = 0;
+int GoodCount = 0;
+int HighCount = 0;
+int VeryHighCount = 0;
+
 //--------Selector Interrupt Var's
 const byte SelectorInterruptPin = 2;
 int sel1flg = 0;
-
-//--------Funnel Interrupt Var's
-const byte FunnelInterruptPin = 3;
-int funnelState = 0;
 
 //--------Cogwheel Error Checking Var's
 const byte inlet0 = 15; //inlet sensor pin
@@ -129,9 +134,15 @@ void loop() {
   
   for (int i=0; i <= StepsPerIncrement; i++) {
     digitalWrite(pulse, HIGH);
-    delay(10);
+    delay(4);
     digitalWrite(pulse, LOW);
-    delay(10);
+    delay(4);
+  }
+  
+  //-------Logic for Checking Bin Contents
+  if((VeryLowCount >= binMax)||(LowCount >= binMax)||(GoodCount >= binMax)||(HighCount >= binMax)||(VeryHighCount>= binMax))
+  {
+    Bin_fill_shutdown;
   }
   
   //-------Logic for Selector Interrupt
@@ -147,12 +158,6 @@ void loop() {
   {
     sel1flg = 0; //reset selector flag
     Error = 0;
-  }
-  //------Logic for Funnel Interrupt
-  
-  if(funnelState == HIGH) //if the beam is still tripped, there is a jam in the funnel
-  {
-    //Clog at funnel!!!!
   }
   
   //------Logic for Cogwheel Error Checking
@@ -192,18 +197,23 @@ void loop() {
 void servo_control(int servo, float val){
   if ((val < VeryLow)){  
     pwm.writeMicroseconds(servo, 0*(USMAX-USMIN)/4+USMIN);    
+    VeryLowCount++; // Increment count of pellets in Very Low Bin   
   }
   if ((val >= VeryLow) && (val < Low)){
     pwm.writeMicroseconds(servo, 1*(USMAX-USMIN)/4+USMIN);
+    LowCount++; // Increment count of pellets in Low Bin
   }
   if ((val >= Low) && (val < High)){
     pwm.writeMicroseconds(servo, 2*(USMAX-USMIN)/4+USMIN);
+    GoodCount++; // Increment count of pellets in Good Bin
   }
   if ((val >= High) && (val < VeryHigh)){
     pwm.writeMicroseconds(servo, 3*(USMAX-USMIN)/4+USMIN);
+    HighCount++; // Increment count of pellets in High Bin
   }
   if ((val >= VeryHigh)){
     pwm.writeMicroseconds(servo, 4*(USMAX-USMIN)/4+USMIN);
+    VeryHighCount++; // Increment count of pellets in Very High Bin
   } 
   
   return;
@@ -236,6 +246,26 @@ void ScaleRead() {
   return;
 }
 
+//------Bin Overfill Shutdown
+void Bin_fill_shutdown() {
+  while(1){
+    if(VeryLowCount >= binMax){
+      Serial.print("Very Low Bin Full");
+    }
+    if(LowCount >= binMax){
+      Serial.print("Low Bin Full");
+    }
+    if(GoodCount >= binMax){
+      Serial.print("Good Bin Full");
+    }
+    if(HighCount >= binMax){
+      Serial.print("High Bin Full");
+    }
+    if(VeryHighCount >= binMax){
+      Serial.print("Very High Bin Full");
+    }
+ }
+
 //------Cogwheel Error Check
 void CogError(float scale[10],bool stepLast[10]) {
   for (int i = 0; i<=9; i++)
@@ -258,23 +288,16 @@ void Selector() {
   sel1flg = 1; //set flag when pellet exits selector
 }
 
-//------Funnel ISR
-void FunnelSensor() {
-  funnelState = digitalRead(FunnelInterruptPin); //set or reset the flag
-}
-
 //------Cogwheel Shutdown
 void Cog_shutdown() {
-  int  i = 1;
   while(1){
-   printf("Error at Cogwheel",i);
+   Serial.print("Error at Cogwheel");
  }
 }
 
 //------Selector Shutdown
 void Selector_shutdown(){
-  int  i = 1;
   while(1){
-   printf("Error at Selector",i);
+   Serial.print("Error at Selector");
  }   
 }
