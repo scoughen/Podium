@@ -1,4 +1,4 @@
-#define StepsPerIncrement 13
+#define StepsPerIncrement 20
 
 int pulse = 7;
 int dir = 6;
@@ -16,8 +16,10 @@ void loop() {
   
   for (int i=0; i <= StepsPerIncrement; i++) {
     digitalWrite(pulse, HIGH);
-    delay(50);
+    delay(4);
     digitalWrite(pulse, LOW);
-    delay(50);
+    delay(4);
   }
+
+  delay(1000);
 }
