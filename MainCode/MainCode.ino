@@ -151,12 +151,6 @@ void loop() {
   {
     sel1flg = 0; //reset selector flag
   }
-  //------Logic for Funnel Interrupt
-  
-  if(funnelState == HIGH) //if the beam is still tripped, there is a jam in the funnel
-  {
-    //Clog at funnel!!!!
-  }
   
   //------Logic for Cogwheel Error Checking
   for (int i = 0; i<= 9; i++) //transfer pellet presence data down the line
