@@ -23,7 +23,7 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 float scale[10];  //values for current readings from all scales
 
 //--------Stepper Motor Var's
-#define StepsPerIncrement 24
+#define StepsPerIncrement 20
 int pulse = 7; //pulse pin
 int dir = 6; // direction pin
 int en = 5; // enable pin
@@ -131,9 +131,9 @@ void loop() {
   
   for (int i=0; i <= StepsPerIncrement; i++) {
     digitalWrite(pulse, HIGH);
-    delay(10);
+    delay(4);
     digitalWrite(pulse, LOW);
-    delay(10);
+    delay(4);
   }
 
   //-------Logic for Checking Bin Contents
