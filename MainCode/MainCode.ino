@@ -143,7 +143,7 @@ void loop() {
   //-------Logic for Checking Bin Contents
   if((VeryLowCount >= binMax)||(LowCount >= binMax)||(GoodCount >= binMax)||(HighCount >= binMax)||(VeryHighCount>= binMax))
   {
-    //Go to inf loop
+    Bin_fill_shutdown;
   }
   
   //-------Logic for Selector Interrupt
@@ -273,18 +273,37 @@ void FunnelSensor() {
   funnelState = digitalRead(FunnelInterruptPin); //set or reset the flag
 }
 
+//------Bin Overfill Shutdown
+void Bin_fill_shutdown() {
+  while(1){
+    if(VeryLowCount >= binMax){
+      Serial.print("Very Low Bin Full");
+    }
+    if(LowCount >= binMax){
+      Serial.print("Low Bin Full");
+    }
+    if(GoodCount >= binMax){
+      Serial.print("Good Bin Full");
+    }
+    if(HighCount >= binMax){
+      Serial.print("High Bin Full");
+    }
+    if(VeryHighCount >= binMax){
+      Serial.print("Very High Bin Full");
+    }
+ }
+}
+
 //------Cogwheel Shutdown
 void Cog_shutdown() {
-  int  i = 1;
   while(1){
-   printf("Error at Cogwheel",i);
+   Serial.print("Error at Cogwheel");
  }
 }
 
 //------Selector Shutdown
 void Selector_shutdown(){
-  int  i = 1;
   while(1){
-   printf("Error at Selector",i);
+   Serial.print("Error at Selector");
  }   
 }
