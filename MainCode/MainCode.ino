@@ -140,7 +140,11 @@ void loop() {
     delay(10);
   }
 
-  //-------Logic for 
+  //-------Logic for Checking Bin Contents
+  if((VeryLowCount >= binMax)||(LowCount >= binMax)||(GoodCount >= binMax)||(HighCount >= binMax)||(VeryHighCount>= binMax))
+  {
+    //Go to inf loop
+  }
   
   //-------Logic for Selector Interrupt
   if(sel1flg != 0) //if the beam was not tripped, the pellet did not exit the selector
