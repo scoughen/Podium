@@ -45,10 +45,6 @@ int VeryHighCount = 0;
 const byte SelectorInterruptPin = 2;
 int sel1flg = 0;
 
-//--------Funnel Interrupt Var's
-const byte FunnelInterruptPin = 3;
-int funnelState = 0;
-
 //--------Cogwheel Error Checking Var's
 const byte inlet0 = 15; //inlet sensor pin
 const byte inlet1 = 16; //inlet sensor pin
@@ -266,11 +262,6 @@ void CogError(float scale[9],bool stepLast[9]) {
 //------Selector ISR
 void Selector() {
   sel1flg = 1; //set flag when pellet exits selector
-}
-
-//------Funnel ISR
-void FunnelSensor() {
-  funnelState = digitalRead(FunnelInterruptPin); //set or reset the flag
 }
 
 //------Bin Overfill Shutdown
