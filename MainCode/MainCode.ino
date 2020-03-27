@@ -7,6 +7,9 @@
     #define Low 0.525 // (g)
     #define High 0.535 // (g)
     #define VeryHigh 0.550 // (g)
+
+  //Bin Contents Threshold
+    #define binMax 100000 // maximum number of pellets that can enter a bin before stoping the process
 //------END OF USER CONTROLLED VALUES
 
 #define scaleTime 1100  //time spent weighing each pellet in miliseconds
@@ -30,6 +33,13 @@ float ReadingA_Strain[10];
 float LoadA_Strain[10]; 
 float ReadingB_Strain[10];
 float LoadB_Strain[10];
+
+//--------Bin Contents Var's
+int VeryLowCount = 0;
+int LowCount = 0;
+int GoodCount = 0;
+int HighCount = 0;
+int VeryHighCount = 0;
 
 //--------Selector Interrupt Var's
 const byte SelectorInterruptPin = 2;
@@ -129,6 +139,12 @@ void loop() {
     digitalWrite(pulse, LOW);
     delay(10);
   }
+
+  //-------Logic for Checking Bin Contents
+  if((VeryLowCount >= binMax)||(LowCount >= binMax)||(GoodCount >= binMax)||(HighCount >= binMax)||(VeryHighCount>= binMax))
+  {
+    //Go to inf loop
+  }
   
   //-------Logic for Selector Interrupt
   if(sel1flg != 0) //if the beam was not tripped, the pellet did not exit the selector
@@ -182,19 +198,24 @@ void loop() {
 //------Servo Control Function
 void servo_control(int servo, float val){
   if ((val < VeryLow)){  
-    pwm.writeMicroseconds(servo, 0*(USMAX-USMIN)/4+USMIN);    
+    pwm.writeMicroseconds(servo, 0*(USMAX-USMIN)/4+USMIN);   
+    VeryLowCount++; // Increment count of pellets in Very Low Bin
   }
   if ((val >= VeryLow) && (val < Low)){
     pwm.writeMicroseconds(servo, 1*(USMAX-USMIN)/4+USMIN);
+    LowCount++; // Increment count of pellets in Low Bin
   }
   if ((val >= Low) && (val < High)){
     pwm.writeMicroseconds(servo, 2*(USMAX-USMIN)/4+USMIN);
+    GoodCount++; // Increment count of pellets in Good Bin
   }
   if ((val >= High) && (val < VeryHigh)){
     pwm.writeMicroseconds(servo, 3*(USMAX-USMIN)/4+USMIN);
+    HighCount++; // Increment count of pellets in High Bin
   }
   if ((val >= VeryHigh)){
     pwm.writeMicroseconds(servo, 4*(USMAX-USMIN)/4+USMIN);
+    VeryHighCount++; // Increment count of pellets in Very High Bin
   } 
   
   return;
