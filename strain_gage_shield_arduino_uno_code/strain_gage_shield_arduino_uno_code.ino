@@ -2,22 +2,23 @@
 
 // Put two known loads on the Strain Gauge sensor and write obtained values below :  (You can use Strain 1 or Strain 2 or the two Strains) 
 
-float ReadingA_Strain1 = 301.0;
-float LoadA_Strain1 = 0.0; //  (Kg,lbs..) 
-float ReadingB_Strain1 = 302.0;
-float LoadB_Strain1 = 80.0; //  (Kg,lbs..) 
+float ReadingA_Strain1 = 868.0;
+float LoadA_Strain1 = 0.0; //  (g) 
+float ReadingB_Strain1 = 948.0;
+float LoadB_Strain1 = 2.9; //  (g) 
 
-float ReadingA_Strain2 = 1.0;
-float LoadA_Strain2 = 0.0; //  (Kg,lbs..) 
-float ReadingB_Strain2 = 60.0;
-float LoadB_Strain2 = 80.0; //  (Kg,lbs..) 
+float ReadingA_Strain2 = 309.0;
+float LoadA_Strain2 = 0.0; //  (g) 
+float ReadingB_Strain2 = 309.0;
+float LoadB_Strain2 = 8.7; //  (g) 
 
 
-int time_step = 2500 ; // reading every 2.5s
+int time_step = 750 ; // reading every 0.75s
 long time = 0;
 
 void setup() {
   Serial.begin(9600); //  setup serial baudrate
+  analogReference(EXTERNAL);
 }
 
 void loop() {
@@ -33,13 +34,13 @@ void loop() {
     Serial.print("Reading_Strain1 : ");
     Serial.print(newReading_Strain1);     // display strain 1 reading
     Serial.print("  Load_Strain1 : ");
-    Serial.println(load_Strain1);     // display strain 1 load
+    Serial.println(load_Strain1,4);     // display strain 1 load
     Serial.println('\n'); 
-    Serial.print("Reading_Strain2 : ");
-    Serial.print(newReading_Strain2);     // display strain 2 reading
-    Serial.print("  Load_Strain2 : ");
-    Serial.println(load_Strain2);         // display strain 2 load 
-    Serial.println('\n');
+    //Serial.print("Reading_Strain2 : ");
+    //Serial.print(newReading_Strain2);     // display strain 2 reading
+    //Serial.print("  Load_Strain2 : ");
+    //Serial.println(load_Strain2);         // display strain 2 load 
+    //Serial.println('\n');
     time = millis();
   }
 }
