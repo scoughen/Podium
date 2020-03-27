@@ -97,7 +97,7 @@ void setup() {
 void loop() {
   for (int i = 0; i<=0; i++)
   {
-    scale[i] = servo_control(i);
+    scale[i] = servo_control(i,ScaleRead());
   }
 
   //-------Cogwheel Control
@@ -145,7 +145,7 @@ void loop() {
 
 
 //------Servo Control Function
-float servo_control(int servo){
+float servo_control(int servo, float val){
   float val = ScaleRead(servo);  //Reads value of scale
   if ((val < VeryLow)){  
     pwm.writeMicroseconds(servo, 0*(USMAX-USMIN)/4+USMIN);    
@@ -166,7 +166,7 @@ float servo_control(int servo){
 }
 
 //------Load Cell Reading Function
-float ScaleRead(int scale) {
+float ScaleRead() {
   float ScaleVal = 0;
   float sum = 0;
   
