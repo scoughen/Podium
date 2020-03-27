@@ -251,3 +251,19 @@ void Selector() {
 void FunnelSensor() {
   funnelState = digitalRead(FunnelInterruptPin); //set or reset the flag
 }
+
+//------Cogwheel Shutdown
+void Cog_shutdown() {
+  int  i = 1;
+  while(1){
+   printf("Error at Cogwheel",i);
+ }
+}
+
+//------Selector Shutdown
+void Selector_shutdown(){
+  int  i = 1;
+  while(1){
+   printf("Error at Selector",i);
+ }   
+}
