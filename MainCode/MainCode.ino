@@ -109,9 +109,6 @@ void setup() {
   int sel1flg;
   
   attachInterrupt(digitalPinToInterrupt(SelectorInterruptPin), Selector, RISING);
-  //------Set up for Funnel Interrupt
-  pinMode(FunnelInterruptPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(FunnelInterruptPin), FunnelSensor, CHANGE);
   
   //------Set up for Cogwheel Error Checking
   pinMode(inlet0, INPUT);
@@ -150,7 +147,7 @@ void loop() {
   {
     //Problem between scale and selector exit!!!!
    Error++;
-   if Error = ErrorCount{
+   if (Error = ErrorCount) {
     Selector_shutdown();
    }
   }
@@ -189,7 +186,26 @@ void loop() {
   
   CogError(scale,step11);
 
-  //------
+  //------Bin Volume Output
+  if ((VeryLowCount%100 == 0)||(LowCount%100 == 0)||(GoodCount%100 == 0)||(HighCount%100 == 0)||(VeryHighCount%100 == 0))
+  {
+    Serial.print("VeryLowCount = ");
+    Serial.print(VeryLowCount);
+    Serial.print("\t");
+    Serial.print("LowCount = ");
+    Serial.print(LowCount);
+    Serial.print("\t");
+    Serial.print("GoodCount = ");
+    Serial.print(GoodCount);
+    Serial.print("\t");
+    Serial.print("HighCount = ");
+    Serial.print(HighCount);
+    Serial.print("\t");
+    Serial.print("VeryHighCount = ");
+    Serial.print(VeryHighCount);
+    Serial.print("\n");
+  }
+  
 }//End of Main Loop
 
 
@@ -264,7 +280,8 @@ void Bin_fill_shutdown() {
     if(VeryHighCount >= binMax){
       Serial.print("Very High Bin Full");
     }
- }
+  }
+}
 
 //------Cogwheel Error Check
 void CogError(float scale[10],bool stepLast[10]) {
