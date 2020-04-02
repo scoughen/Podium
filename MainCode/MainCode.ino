@@ -1,4 +1,5 @@
 #include <Adafruit_PWMServoDriver.h>
+#include <Ard2499.h>
 #include <Wire.h>
 
 //------User Controlled Values
@@ -11,9 +12,10 @@
     #define binMax 100000 // maximum number of pellets that can enter a bin before stoping the process
 //------END OF USER CONTROLLED VALUES
 
-#define scaleTime 1100  //time spent weighing each pellet in miliseconds
+#define scaleTime 1  //time spent weighing each pellet in miliseconds
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+Ard2499 adc;
 
 #define USMIN  1000 // This is the rounded 'minimum' microsecond length based on the minimum pulse of 150
 #define USMAX  1500 // This is the rounded 'maximum' microsecond length based on the maximum pulse of 600
@@ -71,6 +73,7 @@ bool step11[10]; //1 element per line  -- value for pellet presence when reaches
 
 //------Shutdown Var's
 int Error = 0;
+int CogErrorFlg[10] = {0,0,0,0,0,0,0,0,0,0};
 int ErrorCount = 10;
 
 //--------
@@ -78,10 +81,10 @@ int ErrorCount = 10;
 void setup() {
   //--------Scale Calibration Data
     //--------Scale 0
-      ReadingA_Strain[0] = 755.0;
-      LoadA_Strain[0] = 0.0; //  (g) 
-      ReadingB_Strain[0] = 781.0;
-      LoadB_Strain[0] = 2.9; //  (g) 
+      ReadingA_Strain[0] = 10441236.00;
+      LoadA_Strain[0] = 1.0; //  (g) 
+      ReadingB_Strain[0] = 10572013.00;
+      LoadB_Strain[0] = 2.0; //  (g) 
     //--------Scale 1
       ReadingA_Strain[1] = 866.0;
       LoadA_Strain[1] = 0.0; //  (g) 
@@ -102,7 +105,10 @@ void setup() {
   pinMode (en, OUTPUT);
 
   //------Set up for Reading Scales
-  analogReference(INTERNAL1V1);
+  Wire.begin();
+  adc.begin(ARD2499_ADC_ADDR_ZZZ, ARD2499_EEP_ADDR_ZZ);
+  adc.ltc2499ChangeConfiguration(LTC2499_CONFIG2_60_50HZ_REJ);
+  adc.ltc2499ChangeChannel(LTC2499_CHAN_SINGLE_0P);
 
   //------Set up for Selector Interrupt
   pinMode(SelectorInterruptPin, INPUT_PULLUP);
@@ -120,7 +126,7 @@ void loop() {
   
   ScaleRead(); //Read all scales (values stored in "scale")
  
-  for (int i = 0; i<=0; i++)
+  for (int i = 0; i<=9; i++)
   {
     servo_control(i,scale[i]); //Set servos
   }
@@ -241,10 +247,26 @@ void ScaleRead() {
   float sum[10] = {0,0,0,0,0,0,0,0,0,0};
   
   for (int i = 0; i<=scaleTime; i++) {
-    for (int a = 0; a <= 9; a++){
-      ScaleVal[a] = analogRead(a);  // analog in 0 for Strain 1
-      sum[a] = sum[a] + ScaleVal[a];
-    }
+    ScaleVal[0] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_1P);
+    sum[0] = sum[0] + ScaleVal[0];
+    ScaleVal[1] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_2P);
+   sum[1] = sum[1] + ScaleVal[1];
+    ScaleVal[2] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_3P);
+    sum[2] = sum[2] + ScaleVal[2];
+    ScaleVal[3] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_4P);
+    sum[3] = sum[3] + ScaleVal[3];
+    ScaleVal[4] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_5P);
+    sum[4] = sum[4] + ScaleVal[4];
+    ScaleVal[5] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_6P);
+    sum[5] = sum[5] + ScaleVal[5];
+    ScaleVal[6] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_7P);
+    sum[6] = sum[6] + ScaleVal[6];
+    ScaleVal[7] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_8P);
+    sum[7] = sum[7] + ScaleVal[7];
+    ScaleVal[8] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_9P);
+    sum[8] = sum[8] + ScaleVal[8];
+    ScaleVal[9] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_0P);
+    sum[9] = sum[9] + ScaleVal[9];
     delay(1);
   }
 
@@ -287,15 +309,18 @@ void Bin_fill_shutdown() {
 void CogError(float scale[10],bool stepLast[10]) {
   for (int i = 0; i<=9; i++)
   {
-      if(scale[i] != 0 && stepLast[i] == 1)
+    if(scale[i] != 0 && stepLast[i] == 1)
     {
       //no issues
-     
+      CogErrorFlg[i] = 0;
     }
     else
     {
-      
       //Issue between system inlet and scale!!!!
+      CogErrorFlg[i]++;
+      if (CogErrorFlg[i] == ErrorCount) {
+        Cog_shutdown();
+      }
     }
   }
 }
