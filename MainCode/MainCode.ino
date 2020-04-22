@@ -81,9 +81,9 @@ int ErrorCount = 10;
 void setup() {
   //--------Scale Calibration Data
     //--------Scale 0
-      ReadingA_Strain[0] = 10441236.00;
+      ReadingA_Strain[0] = 29965866.00;
       LoadA_Strain[0] = 1.0; //  (g) 
-      ReadingB_Strain[0] = 10572013.00;
+      ReadingB_Strain[0] = 30139296.00;
       LoadB_Strain[0] = 2.0; //  (g) 
     //--------Scale 1
       ReadingA_Strain[1] = 866.0;
@@ -154,7 +154,7 @@ void loop() {
     //Problem between scale and selector exit!!!!
    Error++;
    if (Error = ErrorCount) {
-    Selector_shutdown();
+//    Selector_shutdown();
    }
   }
   else //if the beam was tripped, the pellet exited the selector
@@ -250,7 +250,7 @@ void ScaleRead() {
     ScaleVal[0] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_1P);
     sum[0] = sum[0] + ScaleVal[0];
     ScaleVal[1] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_2P);
-   sum[1] = sum[1] + ScaleVal[1];
+    sum[1] = sum[1] + ScaleVal[1];
     ScaleVal[2] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_3P);
     sum[2] = sum[2] + ScaleVal[2];
     ScaleVal[3] = adc.ltc2499ReadAndChangeChannel(LTC2499_CHAN_SINGLE_4P);
@@ -277,7 +277,7 @@ void ScaleRead() {
     
     scale[a] = ((LoadB_Strain[a] - LoadA_Strain[a])/(ReadingB_Strain[a] - ReadingA_Strain[a])) * (ScaleVal[a] - ReadingA_Strain[a]) + LoadA_Strain[a];
   
-    Serial.print(scale[a]);
+    Serial.print(scale[a],3);
     Serial.print("\n");
   }
   
@@ -319,7 +319,7 @@ void CogError(float scale[10],bool stepLast[10]) {
       //Issue between system inlet and scale!!!!
       CogErrorFlg[i]++;
       if (CogErrorFlg[i] == ErrorCount) {
-        Cog_shutdown();
+//        Cog_shutdown();
       }
     }
   }
