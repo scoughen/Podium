@@ -114,7 +114,7 @@ void setup() {
   pinMode(SelectorInterruptPin, INPUT_PULLUP);
   int sel1flg;
   
-  attachInterrupt(digitalPinToInterrupt(SelectorInterruptPin), Selector, RISING);
+  attachInterrupt(digitalPinToInterrupt(SelectorInterruptPin), Selector, FALLING);
   
   //------Set up for Cogwheel Error Checking
   pinMode(inlet0, INPUT);
@@ -205,7 +205,7 @@ void loop() {
   }
   
   //-------Logic for Selector Interrupt
-  if(sel1flg != 0) //if the beam was not tripped, the pellet did not exit the selector
+  if(sel1flg != 1) //if the beam was not tripped, the pellet did not exit the selector
   {
     //Problem between scale and selector exit!!!!
    Error++;
