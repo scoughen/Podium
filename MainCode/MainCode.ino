@@ -63,7 +63,7 @@ const byte inlet5 = 13; //inlet sensor pin          <--  need to finalize ports
 const byte inlet6 = 14; //inlet sensor pin
 const byte inlet7 = 15; //inlet sensor pin
 const byte inlet8 = 16; //inlet sensor pin
-const byte inlet9 = 17; //inlet sensor pin
+const byte inlet9 = 14; //inlet sensor pin
 const byte scale0 = A0; //scale pin
 bool step0[10]; //1 element per line  -- value for pellet presence before cogwheel
 bool step1[10]; //1 element per line  -- value for pellet presence when reached cogwheel
@@ -443,7 +443,7 @@ void Bin_fill_shutdown() {
 void CogError(float scale[10],bool stepLast[10]) {
   for (int i = 0; i<=9; i++)
   {
-    if(scale[i] != 0 && stepLast[i] == 1)
+    if(scale[i] <= 0.1 && stepLast[i] == 1)
     {
       //no issues
       CogErrorFlg[i] = 0;
