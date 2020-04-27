@@ -64,7 +64,6 @@ const byte inlet6 = 14; //inlet sensor pin
 const byte inlet7 = 15; //inlet sensor pin
 const byte inlet8 = 16; //inlet sensor pin
 const byte inlet9 = 17; //inlet sensor pin
-const byte scale0 = A0; //scale pin
 bool step0[10]; //1 element per line  -- value for pellet presence before cogwheel
 bool step1[10]; //1 element per line  -- value for pellet presence when reached cogwheel
 bool step2[10]; //1 element per line  -- value for pellet presence 1 cycle after reaching cogwheel
@@ -175,25 +174,15 @@ void setup() {
   
   //------Set up for Cogwheel Error Checking
   pinMode(inlet0, INPUT);
-  pinMode(scale0, INPUT);
   pinMode(inlet1, INPUT);
-  pinMode(scale1, INPUT);
   pinMode(inlet2, INPUT);
-  pinMode(scale2, INPUT);
   pinMode(inlet3, INPUT);
-  pinMode(scale3, INPUT);
   pinMode(inlet4, INPUT);
-  pinMode(scale4, INPUT);
   pinMode(inlet5, INPUT);
-  pinMode(scale5, INPUT);
   pinMode(inlet6, INPUT);
-  pinMode(scale6, INPUT);
   pinMode(inlet7, INPUT);
-  pinMode(scale7, INPUT);
   pinMode(inlet8, INPUT);
-  pinMode(scale8, INPUT);
   pinMode(inlet9, INPUT);
-  pinMode(scale9, INPUT);
 }
 
 
@@ -280,17 +269,22 @@ void loop() {
   }
   
   //-------Logic for Selector Interrupt
-  if((sel1flg[0] != 1) || (sel1flg[1] != 1) || (sel1flg[2] != 1) || (sel1flg[3] != 1) || (sel1flg[4] != 1) \\ (sel1flg[5] != 1)) //if the beam was not tripped, the pellet did not exit the selector
+  if((sel1flg[0] != 1) || (sel1flg[1] != 1) || (sel1flg[2] != 1) || (sel1flg[3] != 1) || (sel1flg[4] != 1) || (sel1flg[5] != 1)) //if the beam was not tripped, the pellet did not exit the selector
   {
     //Problem between scale and selector exit!!!!
    Error++;
    if (Error = ErrorCount) {
-    Selector_shutdown();
+//    Selector_shutdown();
    }
   }
   else //if the beam was tripped, the pellet exited the selector
   {
-    sel1flg = 0; //reset selector flag
+    sel1flg[0] = 0; //reset selector flag
+    sel1flg[1] = 0; //reset selector flag
+    sel1flg[2] = 0; //reset selector flag
+    sel1flg[3] = 0; //reset selector flag
+    sel1flg[4] = 0; //reset selector flag
+    sel1flg[5] = 0; //reset selector flag
     Error = 0;
   }
   
@@ -453,7 +447,7 @@ void CogError(float scale[10],bool stepLast[10]) {
       //Issue between system inlet and scale!!!!
       CogErrorFlg[i]++;
       if (CogErrorFlg[i] == ErrorCount) {
-        Cog_shutdown();
+//        Cog_shutdown();
       }
     }
   }
