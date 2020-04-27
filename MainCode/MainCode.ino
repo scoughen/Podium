@@ -348,7 +348,10 @@ void loop() {
 
 //------Servo Control Function
 void servo_control(int servo, float val){  //positions selector servo based on the user set weight thresholds and the weight of the current pellet
-  if ((val < VeryLow)){  
+  if ((val < 0.1)){  
+    pwm.writeMicroseconds(servo, 0*(USMAX-USMIN)/4+USMIN);    
+  }
+  if ((0.1 <= val) && (val < VeryLow)){  
     pwm.writeMicroseconds(servo, 0*(USMAX-USMIN)/4+USMIN);    
     VeryLowCount++; // Increment count of pellets in Very Low Bin   
   }
