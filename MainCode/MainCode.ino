@@ -9,7 +9,7 @@
     #define High 0.535 // (g)
     #define VeryHigh 0.550 // (g)
     #define binMax 100000 // maximum number of pellets that can enter a bin before stoping the process
-//------END OF USER CONTROLLED VALUES
+//------END OF USER CONTROLLED VALUES (Calibration values start at line 92)
 
 #define scaleTime 1  //time spent weighing each pellet in miliseconds
 
