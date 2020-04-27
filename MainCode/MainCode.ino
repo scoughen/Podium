@@ -274,7 +274,7 @@ void loop() {
     //Problem between scale and selector exit!!!!
    Error++;
    if (Error = ErrorCount) {
-//    Selector_shutdown();
+    Selector_shutdown();                                //   If the beam sensors are not used, this line needs to be commented out!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    }
   }
   else //if the beam was tripped, the pellet exited the selector
@@ -447,7 +447,7 @@ void CogError(float scale[10],bool stepLast[10]) {
       //Issue between system inlet and scale!!!!
       CogErrorFlg[i]++;
       if (CogErrorFlg[i] == ErrorCount) {
-//        Cog_shutdown();
+        Cog_shutdown();
       }
     }
   }
