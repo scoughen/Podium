@@ -63,7 +63,7 @@ const byte inlet5 = 13; //inlet sensor pin          <--  need to finalize ports
 const byte inlet6 = 14; //inlet sensor pin
 const byte inlet7 = 15; //inlet sensor pin
 const byte inlet8 = 16; //inlet sensor pin
-const byte inlet9 = 14; //inlet sensor pin
+const byte inlet9 = 17; //inlet sensor pin
 const byte scale0 = A0; //scale pin
 bool step0[10]; //1 element per line  -- value for pellet presence before cogwheel
 bool step1[10]; //1 element per line  -- value for pellet presence when reached cogwheel
