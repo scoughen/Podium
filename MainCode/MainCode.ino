@@ -54,16 +54,16 @@ const byte SelectorInterruptPin5 = 21;
 int sel1flg[6] = {0,0,0,0,0,0};
 
 //--------Cogwheel Error Checking Var's
-const byte inlet0 = 15; //inlet sensor pin
-const byte inlet1 = 16; //inlet sensor pin
-const byte inlet2 = 17; //inlet sensor pin
-const byte inlet3 = 18; //inlet sensor pin
-const byte inlet4 = 19; //inlet sensor pin
-const byte inlet5 = 20; //inlet sensor pin          <--  need to finalize ports
-const byte inlet6 = 21; //inlet sensor pin
-const byte inlet7 = 22; //inlet sensor pin
-const byte inlet8 = 23; //inlet sensor pin
-const byte inlet9 = 24; //inlet sensor pin
+const byte inlet0 = 8; //inlet sensor pin
+const byte inlet1 = 9; //inlet sensor pin
+const byte inlet2 = 10; //inlet sensor pin
+const byte inlet3 = 11; //inlet sensor pin
+const byte inlet4 = 12; //inlet sensor pin
+const byte inlet5 = 13; //inlet sensor pin          <--  need to finalize ports
+const byte inlet6 = 14; //inlet sensor pin
+const byte inlet7 = 15; //inlet sensor pin
+const byte inlet8 = 16; //inlet sensor pin
+const byte inlet9 = 17; //inlet sensor pin
 const byte scale0 = A0; //scale pin
 bool step0[10]; //1 element per line  -- value for pellet presence before cogwheel
 bool step1[10]; //1 element per line  -- value for pellet presence when reached cogwheel
