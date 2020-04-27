@@ -55,7 +55,7 @@ byte Ard2499::ltc2499ChangeChannel(byte channel, bool addStop)
 	// should be greater than 7.5sps, 200ms is more than we should ever have to
 	// wait.
 
-	blockingCountdown = 40;
+	blockingCountdown = 5;   //this was originaly 40   <------------------------------------------------------  Modified by senior design team
 	while(blockingCountdown--)
 	{
 		this->WireInterface->beginTransmission(i2cAddr_ltc2499);
